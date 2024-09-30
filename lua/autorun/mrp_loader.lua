@@ -55,6 +55,9 @@ if SERVER then
     AddCSLuaFile("mrp_hud/cl_hud.lua")
     AddCSLuaFile("mrp_vgui/cl_vgui.lua")
 
+    include("mrp_vehiclespawn/sv_commands.lua")
+    include("mrp_vehiclespawn/sv_vehiclespawn.lua")
+
 elseif CLIENT then
     include("mrp_config/sh_debug_state.lua")
 
