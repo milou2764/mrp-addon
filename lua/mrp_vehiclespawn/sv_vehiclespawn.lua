@@ -28,7 +28,8 @@ local spawnFuncs = {
         local vehicle = ents.Create(className)
         if IsValid(vehicle) then
             vehicle:SetPos(platform.pos+Vector(0,0,100))
-            vehicle:SetAngles(platform.ang)
+            -- bug with default aircraft when setting angle
+            -- vehicle:SetAngles(platform.ang)
             vehicle:Spawn()
             vehicle:Activate()
             platform.vehicle = vehicle
