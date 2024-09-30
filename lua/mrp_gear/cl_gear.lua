@@ -26,6 +26,7 @@ net.Receive("mrp_gear_umnt", function()
 end)
 
 function MRP.LoadPlayerGear(p)
+    if not IsValid(p) then return end
     local getID = p.MRPGetID
     local userid
     if p.UserID then
@@ -40,22 +41,24 @@ function MRP.LoadPlayerGear(p)
         end
     end
     if p:MRPHas("NVGs") then
-        MRP.mountedGear[userid]["NVGs"] = MRP.EntityTable(getID(p, "NVGs")):createCSModel(p)
+        MRP.mountedGear[userid]["NVGs"] =
+            MRP.EntityTable(p:GetNWInt("NVGs")):createCSModel(p)
     end
     if p:MRPHas("Helmet") then
         MRP.mountedGear[userid]["Helmet"] =
-            MRP.EntityTable(getID(p, "Helmet")):createCSModel(p)
+            MRP.EntityTable(p:GetNWInt("Helmet")):createCSModel(p)
     end
     if p:MRPHas("Gasmask") then
         MRP.mountedGear[userid]["Gasmask"] =
-            MRP.EntityTable(getID(p, "Gasmask")):createCSModel(p)
+            MRP.EntityTable(p:GetNWInt("Gasmask")):createCSModel(p)
     end
     if p:MRPHas("Rucksack") then
         MRP.mountedGear[userid]["Rucksack"] =
-            MRP.EntityTable(getID(p, "Rucksack")):createCSModel(p)
+            MRP.EntityTable(p:GetNWInt("Rucksack")):createCSModel(p)
     end
     if p:MRPHas("Vest") then
-        MRP.mountedGear[userid]["Vest"] = MRP.EntityTable(getID(p, "Vest")):createCSModel(p)
+        MRP.mountedGear[userid]["Vest"] =
+            MRP.EntityTable(p:GetNWInt("Vest")):createCSModel(p)
     end
 end
 ------------------------------------------------------------------
