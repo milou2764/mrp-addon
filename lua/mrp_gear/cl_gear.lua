@@ -26,7 +26,7 @@ net.Receive("mrp_gear_umnt", function()
 end)
 
 function MRP.LoadPlayerGear(p)
-    local getID = p.MRPGetID or p.GetNWInt
+    local getID = p.MRPGetID
     local userid
     if p.UserID then
         userid = p:UserID()
