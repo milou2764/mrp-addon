@@ -54,6 +54,7 @@ if SERVER then
 
     AddCSLuaFile("mrp_hud/cl_hud.lua")
     AddCSLuaFile("mrp_vgui/cl_vgui.lua")
+    AddCSLuaFile("mrp_scoreboard/cl_scoreboard.lua")
 
     include("mrp_vehiclespawn/sv_commands.lua")
     include("mrp_vehiclespawn/sv_vehiclespawn.lua")
@@ -86,4 +87,5 @@ elseif CLIENT then
 
     include("mrp_hud/cl_hud.lua")
     include("mrp_vgui/cl_vgui.lua")
+    include("mrp_scoreboard/cl_scoreboard.lua")
 end

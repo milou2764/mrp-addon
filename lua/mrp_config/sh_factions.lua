@@ -13,21 +13,21 @@ MRP.Factions = {
             name = "5e Régiment National de la Libération",
             insignia = "materials/gui/regiment/latvijai.png",
             whratio = 960 / 720,
-            {
+            [1] = {
                 name = "Recrue soldat",
                 short = "",
                 appellation = "Recrue ou par le nom",
                 bodygroupVal = 0,
                 shoulderrank = "null"
             },
-            {
+            [2] = {
                 name = "Soldat",
                 short = "SDT",
                 appellation = "Soldat ou par le nom",
                 bodygroupVal = 1,
                 shoulderrank = "materials/null.vmt"
             },
-            {
+            [3] = {
                 name = "Soldat de première classe",
                 short = "1CL",
                 appellation = "Soldat, première classe ou par le nom",
