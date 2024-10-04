@@ -331,7 +331,8 @@ hook.Add(
     end
 )
 
-hook.Add("MRP::SaveProgress", "MRP::InvSave", function(ply, cid)
+hook.Add("MRP_SaveProgress", "MRP_InvSave", function(ply, cid)
+    Log.d("MRP_InvSave", "called")
     for _, cat in pairs(MRP.WeaponCat) do
         if ply:MRPHas(cat) then
             local wep = ply:GetWeapon(ply:MRPEntityTable(cat).WeaponClass)
@@ -382,7 +383,7 @@ hook.Add("MRP::SaveProgress", "MRP::InvSave", function(ply, cid)
         " WHERE CharacterID = " .. cid .. ";"
 
     Log.d("InvUpdate", "sqlQuery: " .. tostring(sqlQuery))
-    sqlRet = sql.Query(sqlQuery)
+    sqlRet = MRP.SQLRequest(sqlQuery)
     -- Log.d("InvUpdate", "sqlRet: " .. tostring(sqlRet))
 end)
 

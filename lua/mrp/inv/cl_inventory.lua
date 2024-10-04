@@ -360,7 +360,7 @@ end
 local keyReleased = true
 hook.Add("CalcView", "InventoryOpening", function()
     if input.IsKeyDown(MRP.keybinds.inventory)
-    and player_manager.GetPlayerClass(LocalPlayer()) ~= "player_spectator"
+    and LocalPlayer():MRPFaction()~=0
     and keyReleased then
         keyReleased = false
         if (not MRP.plyInvPanel or not MRP.plyInvPanel:IsValid())

@@ -20,9 +20,9 @@ function MRP.SpawnPlayer(ply)
 end
 
 function MRP.SaveProgress(ply)
-    if player_manager.GetPlayerClass(ply) ~= "player" then return end
+    if ply:MRPFaction()==0 then return end
     local cid = ply:MRPCharacterID()
-    hook.Run("MRP::SaveProgress", ply, cid)
+    hook.Run("MRP_SaveProgress", ply, cid)
     sql.Query(
         "UPDATE " .. tbName ..
         " SET " ..
@@ -33,7 +33,8 @@ end
 
 gameevent.Listen("player_disconnect")
 
-hook.Add("player_disconnect", "BackupPlayerData", function(userdata)
+hook.Add("player_disconnect", "MRP_player_disconnect", function(userdata)
+    Log.d("player_disconnect", "called")
     MRP.SaveProgress(Player(userdata.userid))
 end)
 
