@@ -1,5 +1,7 @@
 MRP.FirstRPIMA = {
     name = "1RPIMA",
+    insignia = "materials/gui/regiment/1rpima.png",
+    whratio = 800 / 1372,
     [1]  = {
         name = "Recrue marsouin",
         short = "",

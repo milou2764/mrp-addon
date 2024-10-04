@@ -1,91 +1,54 @@
 MRP = MRP or {}
+-- Function to load files based on their prefix
+local function LoadFiles(module)
+    local folderPath = "mrp/" .. module .. "/"
+    local files, directories = file.Find(folderPath .. "*.lua", "LUA")
 
-if SERVER then
-    include("mrp_config/sh_debug_state.lua")
-    include("mrp_log/sh_log.lua")
-    AddCSLuaFile("mrp_config/sh_debug_state.lua")
-    AddCSLuaFile("mrp_log/sh_log.lua")
+    for _, fileName in ipairs(files) do
+        local filePath = folderPath .. fileName
 
-    include("mrp_base/sv_functions.lua")
-
-    include("mrp_config/sh_ammo.lua")
-    include("mrp_config/sh_config.lua")
-    include("mrp_config/sh_debug_state.lua")
-    include("mrp_config/sv_config.lua")
-    include("mrp_config/sh_1rec.lua")
-    include("mrp_config/sh_2rep.lua")
-    include("mrp_config/sh_5rhc.lua")
-    include("mrp_config/sh_factions.lua")
-    AddCSLuaFile("mrp_config/cl_config.lua")
-    AddCSLuaFile("mrp_config/sh_ammo.lua")
-    AddCSLuaFile("mrp_config/sh_config.lua")
-    AddCSLuaFile("mrp_config/sh_debug_state.lua")
-    AddCSLuaFile("mrp_config/sh_1rec.lua")
-    AddCSLuaFile("mrp_config/sh_2rep.lua")
-    AddCSLuaFile("mrp_config/sh_5rhc.lua")
-    AddCSLuaFile("mrp_config/sh_factions.lua")
-
-    include("mrp_meta/sh_entity.lua")
-    include("mrp_meta/sh_ply.lua")
-    include("mrp_meta/sv_ply.lua")
-    AddCSLuaFile("mrp_meta/sh_entity.lua")
-    AddCSLuaFile("mrp_meta/sh_ply.lua")
-
-    include("mrp_gear/sv_gear.lua")
-    AddCSLuaFile("mrp_gear/cl_gear.lua")
-
-    include("mrp_rank/sv_rank.lua")
-
-    include("mrp_char/sv_database.lua")
-    include("mrp_char/sv_character.lua")
-    include("mrp_char/sv_net.lua")
-    AddCSLuaFile("mrp_char/cl_character.lua")
-
-    include("mrp_inv/sv_database.lua")
-    include("mrp_inv/sv_inventory.lua")
-    include("mrp_inv/sh_inventory.lua")
-    AddCSLuaFile("mrp_inv/sh_inventory.lua")
-    AddCSLuaFile("mrp_inv/cl_inventory.lua")
-
-    include("mrp_wl/sv_net.lua")
-    include("mrp_wl/sv_database.lua")
-    include("mrp_wl/sv_commands.lua")
-    AddCSLuaFile("mrp_wl/cl_functions.lua")
-
-    AddCSLuaFile("mrp_hud/cl_hud.lua")
-    AddCSLuaFile("mrp_vgui/cl_vgui.lua")
-    AddCSLuaFile("mrp_scoreboard/cl_scoreboard.lua")
-
-    include("mrp_vehiclespawn/sv_commands.lua")
-    include("mrp_vehiclespawn/sv_vehiclespawn.lua")
-
-elseif CLIENT then
-    include("mrp_config/sh_debug_state.lua")
-
-    include("mrp_log/sh_log.lua")
-
-    include("mrp_config/cl_config.lua")
-    include("mrp_config/sh_ammo.lua")
-    include("mrp_config/sh_config.lua")
-    include("mrp_config/sh_debug_state.lua")
-    include("mrp_config/sh_1rec.lua")
-    include("mrp_config/sh_2rep.lua")
-    include("mrp_config/sh_5rhc.lua")
-    include("mrp_config/sh_factions.lua")
-
-    include("mrp_char/cl_character.lua")
-
-    include("mrp_meta/sh_entity.lua")
-    include("mrp_meta/sh_ply.lua")
-
-    include("mrp_gear/cl_gear.lua")
-
-    include("mrp_inv/sh_inventory.lua")
-    include("mrp_inv/cl_inventory.lua")
-
-    include("mrp_wl/cl_functions.lua")
-
-    include("mrp_hud/cl_hud.lua")
-    include("mrp_vgui/cl_vgui.lua")
-    include("mrp_scoreboard/cl_scoreboard.lua")
+        if string.StartWith(fileName, "sv_") then
+            -- Load server-only files
+            if SERVER then
+                include(filePath)
+                print("[SERVER] Loaded: " .. filePath)
+            end
+        elseif string.StartWith(fileName, "cl_") then
+            -- Load client-only files
+            if SERVER then
+                AddCSLuaFile(filePath)
+                print("[SERVER] Sent to client: " .. filePath)
+            elseif CLIENT then
+                include(filePath)
+                print("[CLIENT] Loaded: " .. filePath)
+            end
+        elseif string.StartWith(fileName, "sh_") then
+            -- Load shared files (both server and client)
+            if SERVER then
+                AddCSLuaFile(filePath)
+            end
+            include(filePath)
+            print("[SHARED] Loaded: " .. filePath)
+        end
+    end
 end
+
+local modules = {
+    "config",
+    "base",
+    "hud",
+    "log",
+    "rank",
+    "scoreboard",
+    "vgui",
+    "char",
+    "gear",
+    "inv",
+    "meta",
+    "regwl",
+    "vehiclespawn",
+}
+for _,v in ipairs(modules) do
+    LoadFiles(v)
+end
+
