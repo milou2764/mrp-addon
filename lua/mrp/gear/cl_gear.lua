@@ -61,9 +61,6 @@ function MRP.LoadPlayerGear(p)
             MRP.EntityTable(p:GetNWInt("Vest")):createCSModel(p)
     end
 end
-------------------------------------------------------------------
--- This hook initializes all player's gear when the client join --
-------------------------------------------------------------------
 hook.Add("InitPostEntity", "MRP_Gear_Init", function()
     timer.Simple(10, function()
         for _, v in pairs(player.GetAll()) do
@@ -95,7 +92,6 @@ local function unmountGear(userid)
     end
 end
 gameevent.Listen("player_disconnect")
-hook.Add("player_disconnect", "RemovePlayerGear", function(data)
-    print("Player disconnected")
+hook.Add("player_disconnect", "MRP_RemovePlayerGear", function(data)
     unmountGear(data.userid)
 end)

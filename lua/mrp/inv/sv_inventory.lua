@@ -51,7 +51,7 @@ hook.Add("CharacterRegistration", "InvRegistration", function(ply, uid)
     MRP.SQLRequest(request)
 end)
 
-hook.Add("MRP_CharacterSelected", "InventoryInit", function(ply, uid)
+hook.Add("MRP_CharacterSelected", "MRP_InventoryInit", function(ply, uid)
     local Inv =
         sql.QueryRow(
             "SELECT * FROM " .. tbName ..

@@ -136,6 +136,11 @@ local function equipPlayer(ply)
     ply:Give("surrender_animation_swep")
     ply:Give("french_salute")
     ply:Give("raise_your_hand")
+    timer.Simple(5, function()
+        net.Start("mrp_char_playerspawn")
+        net.WriteEntity(ply)
+        net.Broadcast()
+    end)
 end
 
 MRP.PlyModels = {}
@@ -173,11 +178,6 @@ hook.Add("PlayerSpawn", "MRP_char_PlayerSpawn", function( ply )
         end
 
         ply:SetupHands() -- Create the hands and call MRP:PlayerSetHandsModel
-        timer.Simple(2, function()
-            net.Start("mrp_char_playerspawn")
-            net.WriteEntity(ply)
-            net.Broadcast()
-        end)
         equipPlayer(ply)
         return
     end
