@@ -1,6 +1,6 @@
 local TAG = "Utils"
 
-concommand.Add("mrp_admin", function(ply, _, args)
+concommand.Add("mrp", function(ply, _, args)
     if ply:IsAdmin() then
         MRP.Commands[args[1]][args[2]](ply, args[3], args[4], args[5])
     end
