@@ -80,6 +80,9 @@ hook.Add("MRP_CharacterSelected", "MRP_InventoryInit", function(ply, uid)
         ply:SetNWInt(slot .. "Rounds", tonumber(Inv.InventoryRounds[k]))
         ply:SetNWInt(slot .. "Armor", tonumber(Inv.InventoryArmor[k]))
     end
+    net.Start("mrp_gear_playerspawn")
+    net.WriteEntity(ply)
+    net.Broadcast()
 end)
 
 function MRP.PickupAmmoBox(ply, ent)

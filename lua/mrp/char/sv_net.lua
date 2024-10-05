@@ -1,4 +1,3 @@
-util.AddNetworkString("mrp_char_playerspawn")
 util.AddNetworkString("mrp_characters_update")
 util.AddNetworkString("mrp_characters_creation")
 util.AddNetworkString("mrp_characters_selection")

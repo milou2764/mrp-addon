@@ -1,4 +1,4 @@
-net.Receive("mrp_char_playerspawn", function()
+net.Receive("mrp_gear_playerspawn", function()
     local target = net.ReadEntity()
 
     MRP.LoadPlayerGear(target)
