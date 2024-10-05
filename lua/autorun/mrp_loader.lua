@@ -34,19 +34,21 @@ local function LoadFiles(module)
 end
 
 local modules = {
+    "log",
     "config",
+    "autoclean",
     "base",
     "hud",
-    "log",
     "rank",
     "scoreboard",
-    "vgui",
     "char",
     "gear",
     "inv",
     "meta",
+    "npcspawn",
     "regwl",
     "vehiclespawn",
+    "vgui",
 }
 for _,v in ipairs(modules) do
     LoadFiles(v)

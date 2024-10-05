@@ -22,6 +22,6 @@ hook.Add("Think", "AutoClean", AutoCleanup)
 
 hook.Add("OnEntityCreated", "MRPRemoveRagdoll", function(ent)
     if ent:IsRagdoll() and not ent:GetOwner():IsPlayer() then
-        timer.Simple(30, function() if ent and ent.Remove then ent:Remove() end end)
+        timer.Simple(30, function() if ent and ent:IsValid() then ent:Remove() end end)
     end
 end)

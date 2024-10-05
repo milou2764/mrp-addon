@@ -1,10 +1,32 @@
 local TAG = "Utils"
 
+MRP.SaveSpawns = function()
+    file.Write(
+        MRP.SpawnsFile,
+        util.TableToJSON(MRP.Spawns, true)
+    )
+end
+
 concommand.Add("mrp", function(ply, _, args)
     if ply:IsAdmin() then
         MRP.Commands[args[1]][args[2]](ply, args[3], args[4], args[5])
     end
 end)
+
+MRP.ListSpawns = function(ply, cat)
+    local map = game.GetMap()
+    local tb = MRP.Spawns[map][cat]
+    for id, row in ipairs(tb) do
+        ply:ChatPrint("ID: "..id)
+        ply:ChatPrint(util.TableToJSON(row, true))
+    end
+end
+
+MRP.RemoveSpawn = function(cat, id)
+    local map = game.GetMap()
+    table.remove(MRP.Spawns[map][cat], id)
+    MRP.SaveSpawns()
+end
 
 MRP.FindPlayer = function(info)
     Log.d("findPlayer", "triggered")

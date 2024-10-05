@@ -1,8 +1,8 @@
-local vehiclespawn = {}
-vehiclespawn.SpawnDelay = 0
-vehiclespawn.MinSpawnDistance = 300
-vehiclespawn.vehicleCount = 0
-vehiclespawn.vehicleLimit = 20
+local cat = "vehic"
+spawnDelay = 0
+minSpawnDist = 300
+vehicleCount = 0
+vehicleLimit = 20
 
 local spawnFuncs = {
 	simfphys = function(platform)
@@ -21,7 +21,7 @@ local spawnFuncs = {
             )
         platform.vehicle:SetSkin(0)
         platform.vehicle.isMRPVehicle = true
-        vehiclespawn.vehicleCount = vehiclespawn.vehicleCount + 1
+        vehicleCount = vehicleCount + 1
     end,
 	wac = function(platform)
         local className = platform.class
@@ -34,22 +34,21 @@ local spawnFuncs = {
             vehicle:Activate()
             platform.vehicle = vehicle
             platform.vehicle.isMRPVehicle = true
-            vehiclespawn.vehicleCount = vehiclespawn.vehicleCount + 1
+            vehicleCount = vehicleCount + 1
         end
 	end
 }
 
-
 local function vehicleSpawnSystem()
-    if vehiclespawn.SpawnDelay < CurTime() then
-        vehiclespawn.SpawnDelay = CurTime() + 20
-        for _, platform in pairs( MRP.Spawns[game.GetMap()].vehicles ) do
+    if spawnDelay < CurTime() then
+        spawnDelay = CurTime() + 20
+        for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
             if not platform.vehicle or not platform.vehicle:IsValid() then
                 local canSpawn = true
                 for _, p in pairs( player.GetAll() ) do
                     local distance = p:GetPos():Distance( platform.pos )
-                    local incorrectDistance = distance < vehiclespawn.MinSpawnDistance
-                    local limitReached = vehiclespawn.vehicleCount >= vehiclespawn.vehicleLimit
+                    local incorrectDistance = distance < minSpawnDist
+                    local limitReached = vehicleCount >= vehicleLimit
                     if incorrectDistance or limitReached then
                         canSpawn = false
                         break
@@ -66,7 +65,7 @@ end
 hook.Add("Initialize", "InitvehicleSpawn", function()
     local map = game.GetMap()
     if not MRP.Spawns[map] then return end
-    if MRP.Spawns[map].vehicles and #MRP.Spawns[map].vehicles > 0 then
+    if MRP.Spawns[map][cat] and #MRP.Spawns[map][cat] > 0 then
         hook.Add("Think", "vehicleSpawn", vehicleSpawnSystem)
     end
 end)
@@ -78,15 +77,15 @@ concommand.Add("mrp_activatevehiclespawn", function(ply)
             ply:ChatPrint("vehicle Spawn System Disabled")
         else
             local map = game.GetMap()
-            if MRP.Spawns[map].vehicles and #MRP.Spawns[map].vehicles > 0 then
+            if MRP.Spawns[map][cat] and #MRP.Spawns[map][cat] > 0 then
 
-                for _, platform in pairs( MRP.Spawns[game.GetMap()].vehicles ) do
+                for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
                     if platform.vehicle and platform.vehicle:IsValid() then
                         platform.vehicle:Remove()
                     end
                     platform.vehicle = nil
                 end
-                vehiclespawn.vehicleCount = 0
+                vehicleCount = 0
                 hook.Add("Think", "vehicleSpawn", vehicleSpawnSystem)
                 ply:ChatPrint("vehicle Spawn System Enabled")
                 return
@@ -98,9 +97,9 @@ end)
 
 hook.Add("EntityRemoved", "UpdatevehicleCount", function(ent)
     if not ent.isMRPVehicle then return end
-    vehiclespawn.vehicleCount = vehiclespawn.vehicleCount - 1
+    vehicleCount = vehicleCount - 1
 end)
 
 hook.Add("PostCleanupMap", "ResetvehicleCount", function()
-    vehiclespawn.vehicleCount = 0
+    vehicleCount = 0
 end)
