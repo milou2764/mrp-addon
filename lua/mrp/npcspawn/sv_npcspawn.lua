@@ -66,8 +66,8 @@ local function NPCSpawnSystem()
                     local tooClose = distance < minSpawnDistance
                     local tooFar = distance > maxSpawnDistance
                     local limitReached = npcCount >= npcLimit
-                    local opFor = p:MRPFaction()==2
-                    if tooClose or tooFar or limitReached or opFor then
+                    local notBluFor = p:MRPFaction()~=1
+                    if tooClose or tooFar or limitReached or notBluFor then
                         canSpawn = false
                         break
                     end
