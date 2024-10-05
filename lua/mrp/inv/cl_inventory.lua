@@ -427,25 +427,6 @@ hook.Add("NetworkEntityCreated", "MRPNetworkEntityCreated", function(ent)
             MRP.mountedGear[ragdollid][k]:SetTransmitWithParent(true)
             gear:Remove()
         end
-        for k = 1, 20 do
-            ragdoll:SetNWInt("Inventory" .. k,
-                             owner:GetNWInt("Inventory" .. k))
-            ragdoll:SetNWInt("Inventory" .. k .. "Rounds",
-                             owner:GetNWInt("Inventory" .. k .. "Rounds"))
-        end
-        ragdoll:SetNWInt("Helmet", owner:GetNWInt("Helmet"))
-        ragdoll:SetNWInt("HelmetArmor", owner:GetNWInt("HelmetArmor"))
-        ragdoll:SetNWInt("NVGs", owner:GetNWInt("NVGs"))
-        ragdoll:SetNWInt("Gasmask", owner:GetNWInt("Gasmask"))
-        ragdoll:SetNWInt("Rucksack", owner:GetNWInt("Rucksack"))
-        ragdoll:SetNWInt("Vest", owner:GetNWInt("Vest"))
-        ragdoll:SetNWInt("VestArmor", owner:GetNWInt("VestArmor"))
-        ragdoll:SetNWInt("PrimaryWep", owner:GetNWInt("PrimaryWep"))
-        ragdoll:SetNWInt("SecondaryWep", owner:GetNWInt("SecondaryWep"))
-        ragdoll:SetNWInt("RocketLauncher", owner:GetNWInt("RocketLauncher"))
-        ragdoll:SetNWInt("Faction", owner:GetNWInt("Faction"))
-        ragdoll:SetNWInt("ModelIndex", owner:GetNWInt("ModelIndex"))
-        ragdoll:SetNWInt("GasmaskOn", owner:GetNWInt("GasmaskOn"))
         ragdoll:CallOnRemove("MRPCleanUpRagdoll", function()
             for _, gear in pairs(MRP.mountedGear[ragdollid]) do
                 if gear.Remove then

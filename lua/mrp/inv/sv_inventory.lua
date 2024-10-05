@@ -324,6 +324,7 @@ hook.Add(
     "PlayerAmmoChanged",
     "InvAmmoUpdate",
     function(ply, ammoID, oldCount, newCount)
+        if not ply:Alive() then return end
         local ammo = game.GetAmmoName(ammoID)
 
         if newCount < oldCount then

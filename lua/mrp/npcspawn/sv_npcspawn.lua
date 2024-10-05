@@ -1,4 +1,5 @@
-spawnDelay = 0
+MRP.NPCSpawnDelay = 20
+nextSpawnTime = 0
 minSpawnDistance = 1968
 maxSpawnDistance = 20000
 npcCount = 0
@@ -56,8 +57,10 @@ local npcs = {
 }
 
 local function NPCSpawnSystem()
-    if spawnDelay < CurTime() then
-        spawnDelay = CurTime() + 20
+    local ct = CurTime()
+    if nextSpawnTime < ct then
+        nextSpawnTime = ct + MRP.NPCSpawnDelay
+        print(nextSpawnTime)
         for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
             if not platform.npc or not IsValid(platform.npc) then
                 local canSpawn = true
@@ -74,6 +77,7 @@ local function NPCSpawnSystem()
                 end
                 if canSpawn then
                     platform.npc = ents.Create(table.Random(npcs))
+                    if not IsValid(platform.npc) then return end
                     platform.npc:SetPos(platform.pos)
                     platform.npc:SetAngles(platform.ang)
                     local equipment = randomWep()
