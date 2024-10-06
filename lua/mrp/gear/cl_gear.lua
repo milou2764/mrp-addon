@@ -76,7 +76,9 @@ hook.Add("NotifyShouldTransmit", "MRPNotifyShouldTransmitGear", function(ent, sh
                 end
             end
         else
-            MRP.LoadPlayerGear(ent)
+            if IsValid(v) and shouldTransmit then
+                MRP.LoadPlayerGear(ent)
+            end
         end
     end
 end)

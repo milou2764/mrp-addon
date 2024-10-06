@@ -69,7 +69,6 @@ local function NPCSpawnSystem()
                 local notBluFor = p:MRPFaction()~=1
                 if tooClose or tooFar or limitReached or notBluFor then
                     canSpawn = false
-                    break
                 end
             end
             if canSpawn then
