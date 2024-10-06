@@ -58,35 +58,31 @@ local npcs = {
 }
 
 local function NPCSpawnSystem()
-    local ct = CurTime()
-    if nextSpawnTime < ct then
-        nextSpawnTime = ct + MRP.NPCSpawnDelay
-        for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
-            if not platform.npc or not IsValid(platform.npc) then
-                local canSpawn = true
-                for _, p in pairs( player.GetAll() ) do
-                    local distance = p:GetPos():Distance( platform.pos )
-                    local tooClose = distance < minSpawnDistance
-                    local tooFar = distance > maxSpawnDistance
-                    local limitReached = npcCount >= npcLimit
-                    local notBluFor = p:MRPFaction()~=1
-                    if tooClose or tooFar or limitReached or notBluFor then
-                        canSpawn = false
-                        break
-                    end
+    for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
+        if not platform.npc or not IsValid(platform.npc) then
+            local canSpawn = true
+            for _, p in pairs( player.GetAll() ) do
+                local distance = p:GetPos():Distance( platform.pos )
+                local tooClose = distance < minSpawnDistance
+                local tooFar = distance > maxSpawnDistance
+                local limitReached = npcCount >= npcLimit
+                local notBluFor = p:MRPFaction()~=1
+                if tooClose or tooFar or limitReached or notBluFor then
+                    canSpawn = false
+                    break
                 end
-                if canSpawn then
-                    platform.npc = ents.Create(table.Random(npcs))
-                    if not IsValid(platform.npc) then return end
-                    platform.npc:SetPos(platform.pos)
-                    platform.npc:SetAngles(platform.ang)
-                    local equipment = randomWep()
-                    platform.npc:SetKeyValue( "additionalequipment", equipment )
-                    platform.npc.Equipment = equipment
-                    platform.npc:Spawn()
-                    platform.npc:Activate()
-                    npcCount = npcCount + 1
-                end
+            end
+            if canSpawn then
+                platform.npc = ents.Create(table.Random(npcs))
+                if not IsValid(platform.npc) then return end
+                platform.npc:SetPos(platform.pos)
+                platform.npc:SetAngles(platform.ang)
+                local equipment = randomWep()
+                platform.npc:SetKeyValue( "additionalequipment", equipment )
+                platform.npc.Equipment = equipment
+                platform.npc:Spawn()
+                platform.npc:Activate()
+                npcCount = npcCount + 1
             end
         end
     end
@@ -95,18 +91,18 @@ end
 hook.Add("Initialize", "InitNPCSpawn", function()
     local map = game.GetMap()
     if MRP.Spawns[map] and MRP.Spawns[map][cat] and #MRP.Spawns[map][cat] > 0 then
-        hook.Add("Think", "NPCSpawn", NPCSpawnSystem)
+        timer.Create("MRP_NPCSys", MRP.NPCSpawnDelay, 0, NPCSpawnSystem)
     end
 end)
 
 MRP.Commands.npcs.toggle = function(ply)
     if hook.GetTable().Think.NPCSpawn then
-        hook.Remove("Think", "NPCSpawn")
+        timer.Remove("MRP_NPCSys")
         ply:ChatPrint("NPC Spawn System Disabled")
     else
         local map = game.GetMap()
         if MRP.Spawns[map].npcs and #MRP.Spawns[map].npcs > 0 then
-            hook.Add("Think", "NPCSpawn", NPCSpawnSystem)
+            timer.Create("MRP_NPCSys", MRP.NPCSpawnDelay, 0, NPCSpawnSystem)
             ply:ChatPrint("NPC Spawn System Enabled")
             return
         end

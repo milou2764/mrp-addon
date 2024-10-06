@@ -61,13 +61,6 @@ function MRP.LoadPlayerGear(p)
             MRP.EntityTable(p:GetNWInt("Vest")):createCSModel(p)
     end
 end
-hook.Add("InitPostEntity", "MRP_Gear_Init", function()
-    timer.Simple(10, function()
-        for _, v in pairs(player.GetAll()) do
-            MRP.LoadPlayerGear(v)
-        end
-    end)
-end)
 
 hook.Add("NotifyShouldTransmit", "MRPNotifyShouldTransmitGear", function(ent, shouldTransmit)
     if ent:IsPlayer() and ent.UserID then
