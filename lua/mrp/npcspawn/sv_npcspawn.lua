@@ -1,6 +1,6 @@
 MRP.NPCSpawnDelay = 20
 nextSpawnTime = 0
-minSpawnDistance = 1968
+minSpawnDistance = 4000
 maxSpawnDistance = 20000
 npcCount = 0
 npcLimit = 20
