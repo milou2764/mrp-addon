@@ -5,7 +5,9 @@ util.AddNetworkString("mrp_gear_umnt")
 util.AddNetworkString("mrp_gear_dndrp_mnt")
 util.AddNetworkString("mrp_gear_dndrp_umnt")
 
-hook.Add("onPlayerRevived", "MRP_onPlayerRevived", function(ply)
+hook.Add("PlayerSpawn", "MRP_Gear_PlayerSpawn", function(ply)
+    -- Player is not alive right away and there is no better hook
+    -- PlayerSetModel does not work either
     timer.Simple(3, function()
         net.Start("mrp_gear_playerspawn")
         net.WriteEntity(ply)
