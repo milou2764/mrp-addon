@@ -27,6 +27,7 @@ end)
 
 function MRP.LoadPlayerGear(p)
     if not IsValid(p) then return end
+    if not p:Alive() then return end
     local getID = p.MRPGetID
     local userid
     if p.UserID then
@@ -62,25 +63,27 @@ function MRP.LoadPlayerGear(p)
     end
 end
 
-hook.Add("NotifyShouldTransmit", "MRPNotifyShouldTransmitGear", function(ent, shouldTransmit)
-    if ent:IsPlayer() and ent.UserID then
-        if MRP.mountedGear[ent:UserID()] then
-            for _, v in pairs(MRP.mountedGear[ent:UserID()]) do
-                if IsValid(v) and shouldTransmit then
-                    v:SetNoDraw(false)
-                    v:SetParent(ent)
-                    v:AddEffects(EF_BONEMERGE)
-                    v:SetIK(false)
-                elseif IsValid(v) then
-                    v:SetNoDraw(true)
+hook.Add("InitPostEntity", "MRP_EnableGearRendering", function()
+    hook.Add("NotifyShouldTransmit", "MRP_ShouldTransmitGear", function(ent, shouldTransmit)
+        if ent:IsPlayer() and ent.UserID then
+            if MRP.mountedGear[ent:UserID()] then
+                for _, v in pairs(MRP.mountedGear[ent:UserID()]) do
+                    if IsValid(v) and shouldTransmit then
+                        v:SetNoDraw(false)
+                        v:SetParent(ent)
+                        v:AddEffects(EF_BONEMERGE)
+                        v:SetIK(false)
+                    elseif IsValid(v) then
+                        v:SetNoDraw(true)
+                    end
+                end
+            else
+                if shouldTransmit then
+                    MRP.LoadPlayerGear(ent)
                 end
             end
-        else
-            if IsValid(v) and shouldTransmit then
-                MRP.LoadPlayerGear(ent)
-            end
         end
-    end
+    end)
 end)
 
 local function unmountGear(userid)
