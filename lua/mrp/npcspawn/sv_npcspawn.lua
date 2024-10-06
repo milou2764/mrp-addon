@@ -45,7 +45,8 @@ local randomWep = function()
     local i = 1
     local wep = npcWep[i]
     while rd > wep[2] do
-        wep = npcWep[i+1]
+        i = i + 1
+        wep = npcWep[i]
     end
     return wep[1]
 end
