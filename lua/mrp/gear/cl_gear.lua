@@ -70,16 +70,20 @@ hook.Add("InitPostEntity", "MRP_Gear_Init", function()
 end)
 
 hook.Add("NotifyShouldTransmit", "MRPNotifyShouldTransmitGear", function(ent, shouldTransmit)
-    if ent:IsPlayer() and ent.UserID and MRP.mountedGear[ent:UserID()] then
-        for _, v in pairs(MRP.mountedGear[ent:UserID()]) do
-            if IsValid(v) and shouldTransmit then
-                v:SetNoDraw(false)
-                v:SetParent(ent)
-                v:AddEffects(EF_BONEMERGE)
-                v:SetIK(false)
-            elseif IsValid(v) then
-                v:SetNoDraw(true)
+    if ent:IsPlayer() and ent.UserID then
+        if MRP.mountedGear[ent:UserID()] then
+            for _, v in pairs(MRP.mountedGear[ent:UserID()]) do
+                if IsValid(v) and shouldTransmit then
+                    v:SetNoDraw(false)
+                    v:SetParent(ent)
+                    v:AddEffects(EF_BONEMERGE)
+                    v:SetIK(false)
+                elseif IsValid(v) then
+                    v:SetNoDraw(true)
+                end
             end
+        else
+            MRP.LoadPlayerGear(ent)
         end
     end
 end)

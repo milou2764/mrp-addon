@@ -60,7 +60,6 @@ local function NPCSpawnSystem()
     local ct = CurTime()
     if nextSpawnTime < ct then
         nextSpawnTime = ct + MRP.NPCSpawnDelay
-        print(nextSpawnTime)
         for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
             if not platform.npc or not IsValid(platform.npc) then
                 local canSpawn = true
