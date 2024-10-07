@@ -87,11 +87,13 @@ hook.Add("InitPostEntity", "MRP_EnableGearRendering", function()
 end)
 
 net.Receive("mrp_gear_follow", function()
+    Log.d("mrp_gear_follow", "called")
     local target = net.ReadEntity()
     local uid = target:UserID()
 
     for _, v in pairs(MRP.mountedGear[uid]) do
         if IsValid(v) then
+        Log.d("mrp_gear_follow", "bonemerge applied")
             v:SetNoDraw(false)
             v:SetParent(target)
             v:AddEffects(EF_BONEMERGE)
