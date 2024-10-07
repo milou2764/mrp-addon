@@ -113,6 +113,30 @@ MRP.ClassID = {
     ["mrp_ammobox_556x45mm_nato"] = 61,
 }
 
+MRP.EntClWepCl = {
+    ["mrp_fn_maximi_mk1"] = "cw_kk_squad_fn_maximi_mk1",
+    ["mrp_fn_minimi_mk1"] = "cw_kk_squad_fn_minimi_mk1",
+    ["mrp_fn_minimi_mk3"] = "cw_kk_squad_fn_minimi_mk3",
+    ["mrp_fn_scarh_pr"] = "cw_kk_squad_fn_scarh_pr",
+    ["mrp_giat_famas_f1"] = "cw_kk_squad_giat_famas_f1",
+    ["mrp_giat_famas_felin"] = "cw_kk_squad_giat_famas_felin",
+    ["mrp_giat_famas_inf"] = "cw_kk_squad_giat_famas_inf",
+    ["mrp_giat_famas_valorise"] = "cw_kk_squad_giat_famas_valorise",
+    ["mrp_giat_frf2"] = "cw_kk_squad_giat_frf2",
+    ["mrp_giat_pamas_g1"] = "cw_kk_squad_giat_pamas_g1",
+    ["mrp_glock17_gen5"] = "cw_kk_squad_glock17_gen5",
+    ["mrp_hk416_fc"] = "cw_kk_squad_hk416_fc",
+    ["mrp_hk416_fs"] = "cw_kk_squad_hk416_fs",
+    ["mrp_hk417_dmr"] = "cw_kk_squad_hk417_dmr",
+    ["mrp_pgm_hecate_2"] = "cw_kk_squad_pgm_hecate_2",
+    ["mrp_at4cs"] = "cw_kk_ins2_at4",
+}
+MRP.EntIDWepCl = {}
+for entCl, wepCl in pairs(MRP.EntClWepCl) do
+    local id = MRP.ClassID[entCl]
+    MRP.EntIDWepCl[id] = wepCl
+end
+
 MRP.CategoryID = {
     NVGs = 0,
     Gasmask = 1,

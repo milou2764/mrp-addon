@@ -1,3 +1,4 @@
+util.AddNetworkString("mrp_gear_follow")
 util.AddNetworkString("mrp_gear_playerspawn")
 util.AddNetworkString("mrp_gear_drop")
 util.AddNetworkString("mrp_gear_mnt")

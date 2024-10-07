@@ -86,6 +86,20 @@ hook.Add("InitPostEntity", "MRP_EnableGearRendering", function()
     end)
 end)
 
+net.Receive("mrp_gear_follow", function()
+    local target = net.ReadEntity()
+    local uid = target:UserID()
+
+    for _, v in pairs(MRP.mountedGear[uid]) do
+        if IsValid(v) then
+            v:SetNoDraw(false)
+            v:SetParent(target)
+            v:AddEffects(EF_BONEMERGE)
+            v:SetIK(false)
+        end
+    end
+end)
+
 local function unmountGear(userid)
     MRP.mountedGear = MRP.mountedGear or {}
     MRP.mountedGear[userid] = MRP.mountedGear[userid] or {}
