@@ -100,6 +100,7 @@ net.Receive("mrp_gear_follow", function()
             v:SetIK(false)
         end
     end
+    MRP.LoadPlayerGear(target)
 end)
 
 local function unmountGear(userid)
