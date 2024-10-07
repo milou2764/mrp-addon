@@ -41,26 +41,28 @@ function MRP.LoadPlayerGear(p)
             gear:Remove()
         end
     end
-    if p:MRPHas("NVGs") then
-        MRP.mountedGear[userid]["NVGs"] =
-            MRP.EntityTable(p:GetNWInt("NVGs")):createCSModel(p)
-    end
-    if p:MRPHas("Helmet") then
-        MRP.mountedGear[userid]["Helmet"] =
-            MRP.EntityTable(p:GetNWInt("Helmet")):createCSModel(p)
-    end
-    if p:MRPHas("Gasmask") then
-        MRP.mountedGear[userid]["Gasmask"] =
-            MRP.EntityTable(p:GetNWInt("Gasmask")):createCSModel(p)
-    end
-    if p:MRPHas("Rucksack") then
-        MRP.mountedGear[userid]["Rucksack"] =
-            MRP.EntityTable(p:GetNWInt("Rucksack")):createCSModel(p)
-    end
-    if p:MRPHas("Vest") then
-        MRP.mountedGear[userid]["Vest"] =
-            MRP.EntityTable(p:GetNWInt("Vest")):createCSModel(p)
-    end
+    timer.Simple(2, function()
+        if p:MRPHas("NVGs") then
+            MRP.mountedGear[userid]["NVGs"] =
+                MRP.EntityTable(p:GetNWInt("NVGs")):createCSModel(p)
+        end
+        if p:MRPHas("Helmet") then
+            MRP.mountedGear[userid]["Helmet"] =
+                MRP.EntityTable(p:GetNWInt("Helmet")):createCSModel(p)
+        end
+        if p:MRPHas("Gasmask") then
+            MRP.mountedGear[userid]["Gasmask"] =
+                MRP.EntityTable(p:GetNWInt("Gasmask")):createCSModel(p)
+        end
+        if p:MRPHas("Rucksack") then
+            MRP.mountedGear[userid]["Rucksack"] =
+                MRP.EntityTable(p:GetNWInt("Rucksack")):createCSModel(p)
+        end
+        if p:MRPHas("Vest") then
+            MRP.mountedGear[userid]["Vest"] =
+                MRP.EntityTable(p:GetNWInt("Vest")):createCSModel(p)
+        end
+    end)
 end
 
 hook.Add("InitPostEntity", "MRP_EnableGearRendering", function()
@@ -87,19 +89,8 @@ hook.Add("InitPostEntity", "MRP_EnableGearRendering", function()
 end)
 
 net.Receive("mrp_gear_follow", function()
-    Log.d("mrp_gear_follow", "called")
     local target = net.ReadEntity()
-    local uid = target:UserID()
-
-    for _, v in pairs(MRP.mountedGear[uid]) do
-        if IsValid(v) then
-        Log.d("mrp_gear_follow", "bonemerge applied")
-            v:SetNoDraw(false)
-            v:SetParent(target)
-            v:AddEffects(EF_BONEMERGE)
-            v:SetIK(false)
-        end
-    end
+    Log.d("mrp_gear_follow", "called")
     MRP.LoadPlayerGear(target)
 end)
 
