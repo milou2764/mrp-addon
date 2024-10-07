@@ -41,7 +41,7 @@ function MRP.LoadPlayerGear(p)
             gear:Remove()
         end
     end
-    timer.Simple(2, function()
+    timer.Simple(1, function()
         if p:MRPHas("NVGs") then
             MRP.mountedGear[userid]["NVGs"] =
                 MRP.EntityTable(p:GetNWInt("NVGs")):createCSModel(p)
