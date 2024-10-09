@@ -1,9 +1,9 @@
 MRP.NPCSpawnDelay = 20
-nextSpawnTime = 0
-minSpawnDistance = 4000
-maxSpawnDistance = 20000
-npcCount = 0
-npcLimit = 20
+local nextSpawnTime = 0
+local minSpawnDistance = 4000
+local maxSpawnDistance = 6000
+local npcCount = 0
+local npcLimit = 10
 local map
 local cat = "npcs"
 
@@ -29,6 +29,51 @@ MRP.Commands.npcs.add = function(ply, entClass)
         }
     )
     MRP.SaveSpawns()
+end
+MRP.Commands.npcs.max = function(ply, limit)
+    local n = tonumber(limit)
+    ply:ChatPrint("default is " .. npcLimit)
+    if n==nil then
+        ply:ChatPrint("usage: mrp npcs max <number>")
+    else
+        npcLimit = n
+    end
+end
+MRP.Commands.npcs.maxdist = function(ply, limit)
+    local n = tonumber(limit)
+    ply:ChatPrint("default is " .. maxSpawnDistance)
+    if n==nil then
+        ply:ChatPrint("usage: mrp npcs maxdist <number>")
+    else
+        maxSpawnDistance = n
+    end
+end
+
+local function setEnemy(ply)
+    local platforms = MRP.Spawns[game.GetMap()][cat]
+    for _, platform in pairs(platforms) do
+        if IsValid(platform.npc) then
+            -- for regular npcs
+            platform.npc:AddEntityRelationship(ply, D_HT, 99)
+            -- fo VJ npcs
+            table.RemoveByValue(platform.npc.VJ_AddCertainEntityAsFriendly, ply)
+        end
+    end
+end
+
+local function setFriendly(ply)
+    local platforms = MRP.Spawns[game.GetMap()][cat]
+    for _, platform in pairs(platforms) do
+        if IsValid(platform.npc) then
+            -- for regular npcs
+            platform.npc:AddEntityRelationship(ply, D_LI, 99)
+            -- fo VJ npcs
+            local tb = platform.npc.VJ_AddCertainEntityAsFriendly
+            if not table.HasValue(tb, ply) then
+                table.insert(tb, ply)
+            end
+        end
+    end
 end
 
 local npcWep =
@@ -57,21 +102,35 @@ local npcs = {
     "npc_vj_cpmcblaleaderh",
 }
 
+local function platformCanSpawn(platform)
+    for _, p in pairs( player.GetAll() ) do
+        local distance = p:GetPos():Distance( platform.pos )
+        local close = distance < minSpawnDistance
+        local far = distance > maxSpawnDistance
+        local underLimit = npcCount < npcLimit
+        local bluFor = p:MRPFaction()==1
+        local canSpawn = not close and not far and underLimit and bluFor
+        if canSpawn then return true end
+    end
+    return false
+end
+
+local function platformTooFar(platform)
+    for _, p in pairs( player.GetAll() ) do
+        local distance = p:GetPos():Distance( platform.pos )
+        local far = distance > maxSpawnDistance
+        if far then
+            Log.d("npcs", "npc far " .. tonumber(distance))
+            return true
+        end
+    end
+    return false
+end
+
 local function NPCSpawnSystem()
     for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
         if not platform.npc or not IsValid(platform.npc) then
-            local canSpawn = true
-            for _, p in pairs( player.GetAll() ) do
-                local distance = p:GetPos():Distance( platform.pos )
-                local tooClose = distance < minSpawnDistance
-                local tooFar = distance > maxSpawnDistance
-                local limitReached = npcCount >= npcLimit
-                local notBluFor = p:MRPFaction()~=1
-                if tooClose or tooFar or limitReached or notBluFor then
-                    canSpawn = false
-                end
-            end
-            if canSpawn then
+            if platformCanSpawn(platform) then
                 platform.npc = ents.Create(table.Random(npcs))
                 if not IsValid(platform.npc) then return end
                 platform.npc:SetPos(platform.pos)
@@ -82,10 +141,37 @@ local function NPCSpawnSystem()
                 platform.npc:Spawn()
                 platform.npc:Activate()
                 npcCount = npcCount + 1
+                for _,p in pairs(player.GetAll()) do
+                    if p:MRPFaction()==1 then
+                        setEnemy(p)
+                    else
+                        setFriendly(p)
+                    end
+                end
             end
+        elseif platformTooFar(platform) then
+            platform.npc:Remove()
+            npcCount = npcCount - 1
         end
     end
 end
+
+hook.Add(
+    "EntityNetworkedVarChanged",
+    "MRP_npcs_FactionChanged",
+    function(ent, name, oldval, newval)
+        if name == "MRP_Faction" then
+            local relation
+            if newval==1 then
+                -- ent:RemoveFlags(FL_NOTARGET)
+                setEnemy(ent)
+            else
+                -- ent:AddFlags(FL_NOTARGET)
+                setFriendly(ent)
+            end
+        end
+    end
+)
 
 hook.Add("Initialize", "InitNPCSpawn", function()
     local map = game.GetMap()
@@ -95,7 +181,7 @@ hook.Add("Initialize", "InitNPCSpawn", function()
 end)
 
 MRP.Commands.npcs.toggle = function(ply)
-    if hook.GetTable().Think.NPCSpawn then
+    if timer.Exists("MRP_NPCSys") then
         timer.Remove("MRP_NPCSys")
         ply:ChatPrint("NPC Spawn System Disabled")
     else

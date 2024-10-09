@@ -180,7 +180,7 @@ hook.Add("PlayerSpawn", "MRP_char_PlayerSpawn", function( ply )
 end )
 
 net.Receive("CharacterInformation", function(_, ply)
-    ply:SetNWInt("Faction", net.ReadUInt(2))
+    ply:MRPSetFaction(net.ReadUInt(2))
     ply:SetNWInt("Regiment", net.ReadUInt(4))
     ply:SetNWInt("Rank", 1)
     ply:SetNWString("RPName", net.ReadString())
@@ -224,8 +224,8 @@ net.Receive("CharacterInformation", function(_, ply)
             "BodyGroups)\n" ..
         "VALUES\n(" ..
             ply:SteamID64() .. ", " ..
-            ply:GetNWInt("Faction") .. ", " ..
-            ply:GetNWInt("Regiment") .. ", " ..
+            ply:MRPFaction() .. ", " ..
+            ply:MRPRegiment() .. ", " ..
             SQLStr(ply:GetNWString("RPName")) .. ", " ..
             ply:GetNWInt("ModelIndex") .. ", " ..
             ply:GetNWInt("Size") .. ", " ..
@@ -282,7 +282,7 @@ net.Receive("mrp_char_selected", function(_, ply)
     hook.Run("MRP_CharacterSelected", ply, uid)
     Character.Faction = tonumber(Character.Faction)
     ply:SetNWString("RPName", Character.RPName)
-    ply:SetNWInt("Faction", tonumber(Character.Faction))
+    ply:MRPSetFaction(tonumber(Character.Faction))
     ply:SetNWInt("Regiment", tonumber(Character.Regiment))
     ply:SetNWInt("Rank", tonumber(Character.Rank))
     ply:SetNWInt("ModelIndex", tonumber(Character.ModelIndex))

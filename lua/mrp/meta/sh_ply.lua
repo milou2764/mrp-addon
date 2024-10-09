@@ -37,7 +37,11 @@ function meta:MRPRegiment()
 end
 
 function meta:MRPFaction()
-    return self:GetNWInt('Faction')
+    return self:GetNW2Int("MRP_Faction")
+end
+
+function meta:MRPSetFaction(n)
+    return self:SetNW2Int("MRP_Faction", n)
 end
 
 function meta:MRPGasmask()
