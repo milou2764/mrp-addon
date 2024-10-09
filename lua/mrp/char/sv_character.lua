@@ -127,10 +127,8 @@ local function equipPlayer(ply)
         end
     end
     ply:Give("weapon_fists")
-    ply:Give("gmod_tool")
     ply:Give("re_hands")
     ply:Give("aradio")
-    ply:Give("weapon_physgun")
     ply:Give("cross_arms_swep")
     ply:Give("cross_arms_infront_swep")
     ply:Give("surrender_animation_swep")
