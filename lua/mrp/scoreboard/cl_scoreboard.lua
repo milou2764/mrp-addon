@@ -135,10 +135,11 @@ local PLAYER_LINE = {
             return
         end
 
-        if self.Player:MRPRegiment() ~= 0 then
+        
+        self.faction = self.Player:MRPFaction()
+        self.regiment = self.Player:MRPRegiment()
+        if self.faction ~= 0 and self.regiment ~=0 then
             self.Name:SetText(self.Player:RPName())
-            self.faction = self.Player:GetNWInt("Faction")
-            self.regiment = self.Player:GetNWInt("Regiment")
             local width = MRP.Factions[self.faction][self.regiment]["whratio"] * 40
             self.Regiment:SetSize(width, 40)
             self.Regiment:SetImage(MRP.Factions[self.faction][self.regiment]["insignia"])
