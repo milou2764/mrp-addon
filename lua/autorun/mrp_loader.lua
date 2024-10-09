@@ -49,6 +49,7 @@ local modules = {
     "regwl",
     "vehiclespawn",
     "vgui",
+    "nvgs",
 }
 for _,v in ipairs(modules) do
     LoadFiles(v)

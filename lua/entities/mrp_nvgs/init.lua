@@ -3,6 +3,7 @@ AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
 function ENT:Initialize()
+    Log.d("Initialize", self.ClassName)
     baseclass.Get("mrp_base_gear").Initialize(self)
     self:SetBodygroup(0, 1)
 end

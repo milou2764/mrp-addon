@@ -8,8 +8,7 @@ local red = Color(255, 0, 0)
 -- @tparam string m
 local function log(color, tag, m)
     local t = os.date('%X')
-    MsgAll(t, '\t', tag, '\t',  m, '\n')
-    MsgC(red, "[MRP] ", white, t, '\t', tag, '\t',  m, '\n')
+    MsgC(red, "[MRP] ", white, t, ' ', tag, ' ',  m, '\n')
 end
 
 Log.d = function(tag, m)

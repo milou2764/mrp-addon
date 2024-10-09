@@ -375,19 +375,6 @@ hook.Add("CalcView", "InventoryOpening", function()
     end
 end)
 
-net.Receive("MRPPlayerNVGsToggle", function(_, _)
-    local bodyId
-    local uid = net.ReadUInt(16)
-    local ply = Player(uid)
-    if ply:GetNWBool("NVGsOn") then
-        bodyId = 1
-    else
-        bodyId = 0
-    end
-    MRP.mountedGear[uid].NVGs:SetBodygroup(1, bodyId)
-    if IsValid(MRP.plyInvPanel) then MRP.plyInvPanel.NVGs.Model:SetBodygroup(1, bodyId) end
-end)
-
 net.Receive("MRPPlayerTakeOnGasmask", function()
     local userid = net.ReadUInt(16)
     MRP.mountedGear[userid].Gasmask:SetModel("models/gmod4phun/props/gasmask.mdl")
