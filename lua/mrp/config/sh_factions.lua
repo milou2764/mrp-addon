@@ -5,7 +5,7 @@ MRP.Factions = {
         [1] = MRP.SecondREP,
         [2] = MRP.FifthRHC,
         [3] = MRP.FirstREC,
-        [3] = MRP.FirstRPIMA,
+        [4] = MRP.FirstRPIMA,
     },
     [2] = { --Armée rebelle
         name = "Armée rebelle",
