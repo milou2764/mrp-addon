@@ -129,11 +129,7 @@ local function equipPlayer(ply)
     ply:Give("weapon_fists")
     ply:Give("re_hands")
     ply:Give("aradio")
-    ply:Give("cross_arms_swep")
-    ply:Give("cross_arms_infront_swep")
-    ply:Give("surrender_animation_swep")
-    ply:Give("french_salute")
-    ply:Give("raise_your_hand")
+    ply:Give("weapon_emote")
 end
 
 MRP.PlyModels = {}
