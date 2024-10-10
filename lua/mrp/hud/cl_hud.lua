@@ -2,7 +2,8 @@ local hide = {
 	["CHudHealth"] = true,
 	["CHudAmmo"] = true,
 	["CHudCrosshair"] = true,
-	["CHudBattery"] = true
+	["CHudBattery"] = true,
+	["CHudZoom"] = true,
 }
 RunConsoleCommand("mp_show_voice_icons", "0")
 
