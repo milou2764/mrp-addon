@@ -130,6 +130,8 @@ local function equipPlayer(ply)
     ply:Give("re_hands")
     ply:Give("aradio")
     ply:Give("weapon_emote")
+    ply:Give("gmod_tool")
+    ply:Give("alydus_fortificationbuildertablet")
 end
 
 MRP.PlyModels = {}

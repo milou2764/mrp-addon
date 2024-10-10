@@ -120,7 +120,6 @@ local function platformTooFar(platform)
         local distance = p:GetPos():Distance( platform.pos )
         local far = distance > maxSpawnDistance
         if far then
-            Log.d("npcs", "npc far " .. tonumber(distance))
             return true
         end
     end
@@ -128,7 +127,7 @@ local function platformTooFar(platform)
 end
 
 local function NPCSpawnSystem()
-    for _, platform in pairs( MRP.Spawns[game.GetMap()][cat] ) do
+    for _, platform in pairs(MRP.Spawns[game.GetMap()][cat]) do
         if not platform.npc or not IsValid(platform.npc) then
             if platformCanSpawn(platform) then
                 platform.npc = ents.Create(table.Random(npcs))

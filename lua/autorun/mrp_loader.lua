@@ -50,6 +50,7 @@ local modules = {
     "vehiclespawn",
     "vgui",
     "nvgs",
+    "ammolimit",
 }
 for _,v in ipairs(modules) do
     LoadFiles(v)
